@@ -1,0 +1,17 @@
+<customer>
+<cust>
+<cid>10</cid>
+<cname>khushi</cname>
+<ccity>cleveland</ccity>
+</cust>
+<cust>
+<cid>11</cid>
+<cname>luv</cname>
+<ccity>cleveland</ccity>
+</cust>
+<cust>
+<cid>12</cid>
+<cname>jay</cname>
+<ccity>cleveland</ccity>
+</cust>
+</customer>

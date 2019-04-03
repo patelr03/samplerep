@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="81ae5138-e23c-4c34-808a-6d977bc581b3" >
+		<http:listener-connection host="0.0.0.0" port="${http.port}" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="2a89c9f4-fc3b-4471-a490-3eb792f0db72" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" password="Rupalpatel1" database="customers" />
+	</db:config>
+	<flow name="bulkinFlow" doc:id="2af0f230-854d-491b-a277-156fbb99d4e8" >
+		<http:listener doc:name="Listener" doc:id="dff3bae1-bad6-4a9b-8764-96ebd7e49133" config-ref="HTTP_Listener_config" path="/bulk" outputMimeType="application/xml"/>
+		<ee:transform doc:name="Transform Message" doc:id="b0fb9ba1-4fde-410f-8ede-e13d655e8255" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload.customer.*cust map ( cust , indexOfCust ) -> {
+	incname: cust.cname,
+	incid: cust.cid as String,
+	inccity: cust.ccity
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<db:bulk-insert doc:name="Bulk insert" doc:id="a27f38fc-a96a-4b84-ba2a-64a0031eba9c" config-ref="Database_Config">
+			<db:sql >insert into customer(cid,cname,ccity) values (:incid,:incname,:inccity)</db:sql>
+		</db:bulk-insert>
+	</flow>
+</mule>
