@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:spring="http://www.mulesoft.org/schema/mule/spring" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/spring http://www.mulesoft.org/schema/mule/spring/current/mule-spring.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="e316c67e-47a0-46b4-b8ac-433205e77207" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<spring:config name="Spring_Config" doc:name="Spring Config" doc:id="3ce633bc-966f-4442-90ae-1fbfcd6748cc" files="beans.xml" />
+	<spring:security-manager doc:name="Spring Security manager" doc:id="e28a3544-9907-411c-a74f-f84a4c9bf7ef" >
+		<spring:delegate-security-provider name="securityManager" delegate-ref="authenticationManager" />
+	</spring:security-manager>
+	<flow name="basicauthFlow" doc:id="df89f830-eb26-4461-bb2e-639f0d70488a" >
+		<http:listener doc:name="Listener" doc:id="eeb33395-ce13-4eea-a443-38c3798576da" config-ref="HTTP_Listener_config" path="/basic" outputMimeType="application/json"/>
+		<http:basic-security-filter doc:name="Basic security filter" doc:id="e8fde0e7-e7d3-4e6d-b9c1-80e5782db777" realm="mule"/>
+		<spring:authorization-filter doc:name="Authorization filter" doc:id="7eaa163f-4a8a-427f-87b1-3fe0c9452320" requiredAuthorities="ROLE_MULE"/>
+		<set-payload value="Finally it is working...................." doc:name="Set Payload" doc:id="ad8f6643-bab1-42e8-a00e-acb649516f8b" />
+	</flow>
+</mule>
