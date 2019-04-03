@@ -16,6 +16,6 @@ http://www.mulesoft.org/schema/mule/spring http://www.mulesoft.org/schema/mule/s
 		<http:listener doc:name="Listener" doc:id="eeb33395-ce13-4eea-a443-38c3798576da" config-ref="HTTP_Listener_config" path="/basic" outputMimeType="application/json"/>
 		<http:basic-security-filter doc:name="Basic security filter" doc:id="e8fde0e7-e7d3-4e6d-b9c1-80e5782db777" realm="mule"/>
 		<spring:authorization-filter doc:name="Authorization filter" doc:id="7eaa163f-4a8a-427f-87b1-3fe0c9452320" requiredAuthorities="ROLE_MULE"/>
-		<set-payload value="Finally it is working...................." doc:name="Set Payload" doc:id="ad8f6643-bab1-42e8-a00e-acb649516f8b" />
+		<set-payload value="Finally it is working....................and done" doc:name="Set Payload" doc:id="ad8f6643-bab1-42e8-a00e-acb649516f8b" />
 	</flow>
 </mule>
